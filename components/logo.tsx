@@ -17,6 +17,7 @@ export function Logo({ className, size = "md" }: LogoProps) {
     <Link href="/">
       <div className={cn("portfolio-font flex items-center", sizeClasses[size], className)}>
         <span className="mr-2">KAAMI</span>
+        <span className="text-outline">ARSITEK STUDIO</span>
       </div>
     </Link>
   )
