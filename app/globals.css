@@ -176,18 +176,23 @@ h6 {
   @apply w-full;
 }
 
-/* Custom navigation dot */
-.scroll-nav-dot {
+/* Navigation Dot */
+.nav-dot {
   width: 10px;
   height: 10px;
   display: inline-block;
-  border: 1px solid;
-  border-color: inherit;
+  border: 1px solid currentColor;
   content: "";
   background-color: transparent;
   transition: border-color .2s ease-in-out, background-color .2s ease-in-out;
 }
 
-.group:hover .scroll-nav-dot {
+/* Active Navigation Dot */
+.nav-dot-active {
   background-color: currentColor;
+}
+
+/* Hover effect for navigation dot */
+.group:hover .nav-dot:not(.nav-dot-active) {
+  background-color: rgba(currentColor, 0.3);
 }

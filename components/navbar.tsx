@@ -1,7 +1,8 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { ThemeSwitcher } from "./theme-switcher"
@@ -10,51 +11,101 @@ import { Logo } from "./logo"
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [activeLink, setActiveLink] = useState("/")
-  const [isNavVisible, setIsNavVisible] = useState(false)
+  const [activeSection, setActiveSection] = useState("/")
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null)
+
+  // Define sections and their corresponding IDs
+  const navLinks = [
+    { name: "Home", href: "/", id: "home" },
+    { name: "About", href: "/#about", id: "about" },
+    { name: "Projects", href: "/projects", id: "projects" },
+    { name: "Contact", href: "/#contact", id: "contact" },
+  ]
 
   useEffect(() => {
+    // Function to check which section is currently in view
     const handleScroll = () => {
-      const offset = window.scrollY
-      if (offset > 50) {
+      const scrollPosition = window.scrollY + window.innerHeight / 3
+
+      // Set scrolled state for header styling
+      if (window.scrollY > 50) {
         setScrolled(true)
       } else {
         setScrolled(false)
       }
-    }
 
-    // Set active link based on current path or scroll position
-    const setActiveLinkFromPath = () => {
-      const path = window.location.pathname
-      const hash = window.location.hash
+      // Check if we're on the homepage
+      if (window.location.pathname === "/") {
+        // Check each section to see if it's in view
+        const sections = navLinks.map((link) => link.id)
 
-      if (hash) {
-        setActiveLink(hash)
-      } else if (path === "/") {
-        setActiveLink("/")
+        // Find the current section in view
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = document.getElementById(sections[i])
+          if (section) {
+            const sectionTop = section.offsetTop
+            const sectionHeight = section.offsetHeight
+
+            if (scrollPosition >= sectionTop && scrollPosition <= sectionTop + sectionHeight) {
+              setActiveSection(navLinks[i].href)
+              break
+            }
+          }
+        }
+
+        // If we're at the very top of the page, set Home as active
+        if (window.scrollY < 100) {
+          setActiveSection("/")
+        }
       } else {
-        setActiveLink(path)
+        // If we're not on the homepage, set active based on pathname
+        const path = window.location.pathname
+        const matchingLink = navLinks.find(
+          (link) => link.href === path || (path.startsWith("/projects") && link.href === "/projects"),
+        )
+
+        if (matchingLink) {
+          setActiveSection(matchingLink.href)
+        }
       }
     }
 
-    setActiveLinkFromPath()
-    window.addEventListener("scroll", handleScroll)
-    window.addEventListener("hashchange", setActiveLinkFromPath)
+    // Initial check
+    handleScroll()
 
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll)
+
+    // Cleanup
     return () => {
       window.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("hashchange", setActiveLinkFromPath)
     }
   }, [])
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/#about" },
-    { name: "Projects", href: "/projects" },
-    { name: "Contact", href: "/#contact" },
-  ]
+  // Function to scroll to section instead of using default link behavior
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+
+    // If it's a hash link on the homepage
+    if (href.startsWith("/#") && window.location.pathname === "/") {
+      const id = href.replace("/#", "")
+      const element = document.getElementById(id)
+
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" })
+      }
+    } else {
+      // For other pages, use normal navigation
+      window.location.href = href
+    }
+
+    // Close mobile menu if open
+    if (isOpen) {
+      toggleMenu()
+    }
+  }
 
   return (
     <>
@@ -79,40 +130,31 @@ export function Navbar() {
         </div>
       </motion.header>
 
-      {/* Desktop Right Sidebar Navigation - Hidden until hover */}
-      <div
-        className="fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center"
-        onMouseEnter={() => setIsNavVisible(true)}
-        onMouseLeave={() => setIsNavVisible(false)}
-      >
-        <motion.nav
-          className="p-6 rounded-l-xl"
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: isNavVisible ? 0 : 40, opacity: isNavVisible ? 1 : 0.3 }}
-          transition={{ duration: 0.3 }}
-        >
+      {/* Desktop Right Sidebar Navigation - Always visible, text hidden until hover */}
+      <div className="fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center">
+        <motion.nav className="p-6 rounded-l-xl" initial={{ x: 0 }} animate={{ x: 0 }}>
           <div className="flex flex-col space-y-8 items-end">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.name}
                 href={link.href}
-                className={`group flex items-center text-lg transition-all duration-300 ${
-                  activeLink === link.href || (link.href === "/" && activeLink === "/")
-                    ? "text-foreground font-medium"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className="group relative flex items-center text-lg transition-all duration-300"
+                onMouseEnter={() => setHoveredLink(link.href)}
+                onMouseLeave={() => setHoveredLink(null)}
+                onClick={(e) => scrollToSection(e, link.href)}
               >
-                <span className="relative scroll-nav__item">
+                {/* Text that appears on hover */}
+                <motion.span
+                  className={`mr-2 transition-all duration-300 ${
+                    hoveredLink === link.href ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                  }`}
+                >
                   {link.name}
-                  <motion.span
-                    className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"
-                    initial={{ width: activeLink === link.href ? "100%" : "0%" }}
-                    animate={{ width: activeLink === link.href ? "100%" : "0%" }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </span>
-                <span className="ml-2 scroll-nav-dot" />
-              </Link>
+                </motion.span>
+
+                {/* Navigation Dot */}
+                <span className={`nav-dot ${activeSection === link.href ? "nav-dot-active" : ""}`} />
+              </a>
             ))}
             <div className="pt-4 border-t border-border w-full flex justify-end">
               <ThemeSwitcher />
@@ -139,15 +181,15 @@ export function Navbar() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Link
+                  <a
                     href={link.href}
                     className={`text-2xl font-medium ${
-                      activeLink === link.href ? "text-foreground" : "text-muted-foreground"
+                      activeSection === link.href ? "text-foreground" : "text-muted-foreground"
                     }`}
-                    onClick={toggleMenu}
+                    onClick={(e) => scrollToSection(e, link.href)}
                   >
                     {link.name}
-                  </Link>
+                  </a>
                 </motion.div>
               ))}
               <motion.div
