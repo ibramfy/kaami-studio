@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronRight } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { ThemeSwitcher } from "./theme-switcher"
 import { Logo } from "./logo"
 
@@ -11,6 +11,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeLink, setActiveLink] = useState("/")
+  const [isNavVisible, setIsNavVisible] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,11 +58,9 @@ export function Navbar() {
 
   return (
     <>
-      {/* Main Header with Logo */}
+      {/* Main Header with Logo - No Background */}
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-6 transition-colors ${
-          scrolled ? "bg-background/80 backdrop-blur-md" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-6`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -80,13 +79,17 @@ export function Navbar() {
         </div>
       </motion.header>
 
-      {/* Desktop Right Sidebar Navigation */}
-      <div className="fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center">
+      {/* Desktop Right Sidebar Navigation - Hidden until hover */}
+      <div
+        className="fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center"
+        onMouseEnter={() => setIsNavVisible(true)}
+        onMouseLeave={() => setIsNavVisible(false)}
+      >
         <motion.nav
-          className="bg-background/80 backdrop-blur-md p-6 rounded-l-xl shadow-lg"
+          className="p-6 rounded-l-xl"
           initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          animate={{ x: isNavVisible ? 0 : 40, opacity: isNavVisible ? 1 : 0.3 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col space-y-8 items-end">
             {navLinks.map((link) => (
@@ -99,7 +102,7 @@ export function Navbar() {
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <span className="relative">
+                <span className="relative scroll-nav__item">
                   {link.name}
                   <motion.span
                     className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"
@@ -108,13 +111,7 @@ export function Navbar() {
                     transition={{ duration: 0.3 }}
                   />
                 </span>
-                <motion.div
-                  className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={{ x: -5 }}
-                  whileHover={{ x: 0 }}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </motion.div>
+                <span className="ml-2 scroll-nav-dot" />
               </Link>
             ))}
             <div className="pt-4 border-t border-border w-full flex justify-end">
