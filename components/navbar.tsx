@@ -59,9 +59,9 @@ export function Navbar() {
     <>
       {/* Main Header with Logo */}
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-6 transition-colors ${
-          scrolled ? "bg-background/80 backdrop-blur-md" : "bg-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-6 transition-colors ${
+      scrolled ? "" : ""
+      }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
