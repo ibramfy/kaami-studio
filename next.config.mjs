@@ -8,7 +8,8 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['media.graphassets.com'], // Domain untuk gambar Hygraph
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

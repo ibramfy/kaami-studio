@@ -1,94 +1,80 @@
-"use client"
-import { useScroll, useTransform, motion } from "framer-motion"
-import { useRef } from "react"
 import { ChevronDown, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import Footer from "@/components/footer"
 import { Navbar } from "@/components/navbar"
-import { projects } from "@/data/projects"
+import { getAllProjects } from "@/lib/project-service"
+import HomeProjectCard from "@/components/home-project-card"
+import { projects as fallbackProjects } from "@/data/projects" // Gunakan data statis sebagai fallback
 
-export default function Home() {
-  const containerRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  })
+export const revalidate = 3600 // Revalidate every hour
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95])
+export default async function Home() {
+  let projects = []
+
+  try {
+    // Coba ambil data dari Hygraph
+    projects = await getAllProjects()
+
+    // Jika tidak ada proyek yang ditemukan, gunakan data fallback
+    if (!projects || projects.length === 0) {
+      console.log("No projects found from Hygraph, using fallback data")
+
+      // Konversi format data statis ke format yang diharapkan
+      projects = fallbackProjects.map((project) => ({
+        ...project,
+        // Tambahkan properti yang mungkin diharapkan oleh komponen
+        client: project.client || "", // Pastikan field client ada
+        coverImage: null,
+        gallery: [],
+      }))
+    }
+  } catch (error) {
+    console.error("Failed to fetch projects:", error)
+
+    // Gunakan data fallback jika terjadi error
+    projects = fallbackProjects.map((project) => ({
+      ...project,
+      client: project.client || "",
+      coverImage: null,
+      gallery: [],
+    }))
+  }
+
+  const featuredProjects = projects.slice(0, 3)
 
   return (
-    <main ref={containerRef} className="bg-background text-foreground min-h-screen">
+    <main className="bg-background text-foreground min-h-screen">
       <Navbar />
 
       {/* Hero Section */}
-      <motion.section
-        id="home"
-        className="h-screen flex flex-col justify-center relative px-2 sm:px-6 md:px-12 lg:px-24"
-        style={{ opacity, scale }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
+      <section id="home" className="h-screen flex flex-col justify-center relative px-2 sm:px-6 md:px-12 lg:px-24">
         <div className="max-w-5xl">
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4">
             Creative Developer & Digital Designer
-          </motion.h1>
-          <motion.p
-            className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
+          </h1>
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl">
             Building exceptional digital experiences with a focus on animation, interaction, and cutting-edge web
             technologies.
-          </motion.p>
+          </p>
         </div>
 
-        <motion.div
-          className="absolute bottom-12 left-0 right-0 flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-        >
-          <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}>
+        <div className="absolute bottom-12 left-0 right-0 flex justify-center">
+          <div className="animate-bounce">
             <ChevronDown className="w-6 h-6 text-muted-foreground" />
-          </motion.div>
-        </motion.div>
-      </motion.section>
+          </div>
+        </div>
+      </section>
 
       {/* About Section */}
-      <motion.section
+      <section
         id="about"
         className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-20%" }}
       >
         <div className="max-w-5xl mx-auto">
-          <motion.h2
-            className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            About
-          </motion.h2>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10">About</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
+            <div>
               <p className="text-lg md:text-xl text-zinc-300 mb-6">
                 I&apos;m a creative developer and designer specializing in building modern, interactive web experiences
                 that push the boundaries of what&apos;s possible on the web.
@@ -97,14 +83,9 @@ export default function Home() {
                 With expertise in Next.js, React, and animation libraries like Framer Motion, I create digital products
                 that are both visually stunning and technically excellent.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
+            <div>
               <h3 className="text-xl font-semibold mb-4">Skills</h3>
               <ul className="grid grid-cols-2 gap-2 text-zinc-400">
                 <li>Next.js</li>
@@ -116,92 +97,36 @@ export default function Home() {
                 <li>3D Animation</li>
                 <li>Creative Coding</li>
               </ul>
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Projects Section */}
-      <motion.section
+      <section
         id="projects"
         className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-muted/30"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-20%" }}
       >
         <div className="max-w-5xl mx-auto">
-          <motion.h2
-            className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Selected Projects
-          </motion.h2>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10">Selected Projects</h2>
 
           <div className="space-y-12 sm:space-y-16">
-            {projects.slice(0, 3).map((project, index) => (
-              <motion.div
-                key={project.id}
-                className="group"
-                initial={{ y: 100, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-              >
-                <Link href={`/projects/${project.id}`} className="block group-hover:opacity-90 transition-opacity">
-                  <div className="aspect-video bg-muted mb-3 sm:mb-4 transition-theme">
-                    <div className="w-full h-full bg-gradient-to-br from-purple-900 to-violet-600 opacity-80"></div>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">{project.title}</h3>
-                      <p className="text-zinc-400">{project.categories.join(" • ")}</p>
-                    </div>
-                    <motion.div
-                      className="p-1.5 sm:p-2 rounded-full bg-zinc-800"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    >
-                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </motion.div>
-                  </div>
-                </Link>
-              </motion.div>
+            {featuredProjects.map((project, index) => (
+              <HomeProjectCard key={project.id} project={project} index={index} />
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Contact Section */}
-      <motion.section
+      <section
         id="contact"
         className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-20%" }}
       >
         <div className="max-w-5xl mx-auto">
-          <motion.h2
-            className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Let&apos;s Work Together
-          </motion.h2>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10">Let&apos;s Work Together</h2>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             <div>
               <p className="text-lg md:text-xl text-zinc-300 mb-6">
                 I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your
@@ -241,9 +166,9 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       <Footer />
     </main>
