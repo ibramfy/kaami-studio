@@ -7,8 +7,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { ThemeSwitcher } from "./theme-switcher"
 import { Logo } from "./logo"
+import { usePathname } from "next/navigation"
 
 export function Navbar() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("/")
@@ -17,7 +19,7 @@ export function Navbar() {
   // Define sections and their corresponding IDs
   const navLinks = [
     { name: "Home", href: "/", id: "home" },
-    { name: "About", href: "/#about", id: "about" },
+    { name: "About", href: "/about", id: "about" },
     { name: "Projects", href: "/projects", id: "projects" },
     { name: "Contact", href: "/#contact", id: "contact" },
   ]
@@ -61,7 +63,10 @@ export function Navbar() {
         // If we're not on the homepage, set active based on pathname
         const path = window.location.pathname
         const matchingLink = navLinks.find(
-          (link) => link.href === path || (path.startsWith("/projects") && link.href === "/projects"),
+          (link) =>
+            link.href === path ||
+            (path.startsWith("/projects") && link.href === "/projects") ||
+            (path.startsWith("/about") && link.href === "/about"),
         )
 
         if (matchingLink) {
@@ -80,7 +85,7 @@ export function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [])
+  }, [pathname])
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
