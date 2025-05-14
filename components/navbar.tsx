@@ -21,6 +21,7 @@ export function Navbar() {
     { name: "Home", href: "/", id: "home" },
     { name: "About", href: "/about", id: "about" },
     { name: "Projects", href: "/projects", id: "projects" },
+    { name: "Pricing", href: "/pricing", id: "pricing" },
     { name: "Contact", href: "/#contact", id: "contact" },
   ]
 
@@ -66,7 +67,8 @@ export function Navbar() {
           (link) =>
             link.href === path ||
             (path.startsWith("/projects") && link.href === "/projects") ||
-            (path.startsWith("/about") && link.href === "/about"),
+            (path.startsWith("/about") && link.href === "/about") ||
+            (path.startsWith("/pricing") && link.href === "/pricing"),
         )
 
         if (matchingLink) {
@@ -124,19 +126,24 @@ export function Navbar() {
         <div className="flex justify-between items-center">
           <Logo />
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground focus:outline-none relative z-50"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Toggle Button - Inside header container */}
+          <div className="flex justify-end pr-2">
+            <button
+              className="text-foreground focus:outline-none z-50 
+               md:absolute md:right-5 md:top-1/2 md:-translate-y-1/2"
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </motion.header>
 
       {/* Desktop Right Sidebar Navigation - Always visible, text hidden until hover */}
-      <div className="fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center">
+      <div
+        className={`fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center ${isOpen ? "md:hidden" : ""}`}
+      >
         <motion.nav className="p-6 rounded-l-xl" initial={{ x: 0 }} animate={{ x: 0 }}>
           <div className="flex flex-col space-y-8 items-end">
             {navLinks.map((link) => (
@@ -172,7 +179,7 @@ export function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-30 bg-background flex flex-col justify-center items-center md:hidden"
+            className="fixed inset-0 z-40 bg-background flex flex-col justify-center items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
