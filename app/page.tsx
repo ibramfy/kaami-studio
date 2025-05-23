@@ -47,20 +47,35 @@ export default async function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section id="home" className="h-screen flex flex-col justify-center relative px-2 sm:px-6 md:px-12 lg:px-24">
-        <div className="max-w-5xl">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4">
+      <section
+        id="home"
+        className="h-screen flex flex-col justify-center relative px-2 sm:px-6 md:px-12 lg:px-24 overflow-hidden"
+      >
+        {/* Background Image with Animation */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-in fade-in zoom-in duration-1000"
+          style={{
+            backgroundImage: "url('/images/herosection.jpg')",
+          }}
+        >
+          {/* Overlay untuk memastikan teks tetap terbaca */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-5xl">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 text-white animate-in slide-in-from-bottom duration-1000 delay-300">
             Creative Developer & Digital Designer
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl animate-in slide-in-from-bottom duration-1000 delay-500">
             Building exceptional digital experiences with a focus on animation, interaction, and cutting-edge web
             technologies.
           </p>
         </div>
 
-        <div className="absolute bottom-12 left-0 right-0 flex justify-center">
+        <div className="absolute bottom-12 left-0 right-0 flex justify-center z-10">
           <div className="animate-bounce">
-            <ChevronDown className="w-6 h-6 text-muted-foreground" />
+            <ChevronDown className="w-6 h-6 text-white/70" />
           </div>
         </div>
       </section>
