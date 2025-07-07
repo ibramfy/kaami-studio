@@ -7,7 +7,14 @@ export default function AboutPage() {
       <section className="py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12 tracking-tight">About KAAMI ARSITEK</h1>
+          <h1 className="font-din-condensed
+            uppercase 
+            text-[32px] md:text-[50px] lg:text-[67px]
+            tracking-tight 
+            text-transparent
+            leading-[0.9] 
+            [-webkit-text-stroke:0.7875px_black] 
+            dark:[-webkit-text-stroke:0.7875px_white] text-left">Kami mendorong kota dan lingkungan agar tumbuh lebih baik di masa depan.</h1>
 
           {/* Image */}
           <div className="aspect-[16/9] w-full bg-muted rounded-lg overflow-hidden mb-12">

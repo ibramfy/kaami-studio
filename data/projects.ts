@@ -1,5 +1,6 @@
 export interface Project {
   id: string
+  slug: string
   title: string
   categories: string[]
   year: number
@@ -11,6 +12,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "1",
+    slug: "urban-residential-complex",
     title: "Urban Residential Complex",
     categories: ["Residential", "Urban"],
     year: 2023,
@@ -20,6 +22,7 @@ export const projects: Project[] = [
   },
   {
     id: "2",
+    slug: "cultural-center",
     title: "Cultural Center",
     categories: ["Cultural", "Public"],
     year: 2022,
@@ -29,6 +32,7 @@ export const projects: Project[] = [
   },
   {
     id: "3",
+    slug: "sustainable-office-tower",
     title: "Sustainable Office Tower",
     categories: ["Commercial", "Sustainable"],
     year: 2023,
@@ -38,6 +42,7 @@ export const projects: Project[] = [
   },
   {
     id: "4",
+    slug: "waterfront-pavilion",
     title: "Waterfront Pavilion",
     categories: ["Public", "Landscape"],
     year: 2021,
@@ -47,6 +52,7 @@ export const projects: Project[] = [
   },
   {
     id: "5",
+    slug: "mountain-retreat",
     title: "Mountain Retreat",
     categories: ["Residential", "Landscape"],
     year: 2022,
@@ -56,6 +62,7 @@ export const projects: Project[] = [
   },
   {
     id: "6",
+    slug: "urban-renewal-project",
     title: "Urban Renewal Project",
     categories: ["Urban", "Mixed-Use"],
     year: 2021,
@@ -65,6 +72,7 @@ export const projects: Project[] = [
   },
   {
     id: "7",
+    slug: "educational-campus",
     title: "Educational Campus",
     categories: ["Educational", "Public"],
     year: 2023,
@@ -74,6 +82,7 @@ export const projects: Project[] = [
   },
   {
     id: "8",
+    slug: "floating-apartments",
     title: "Floating Apartments",
     categories: ["Residential", "Experimental"],
     year: 2022,
@@ -83,6 +92,7 @@ export const projects: Project[] = [
   },
   {
     id: "9",
+    slug: "desert-museum",
     title: "Desert Museum",
     categories: ["Cultural", "Landscape"],
     year: 2021,

@@ -1,31 +1,37 @@
 import { GraphQLClient } from "graphql-request"
 
-// Gunakan fallback untuk environment variables
-const HYGRAPH_ENDPOINT = process.env.HYGRAPH_ENDPOINT || "https://api-ap-south-1.hygraph.com/v2/dummy-endpoint/master"
-const HYGRAPH_TOKEN = process.env.HYGRAPH_TOKEN || ""
+// Pastikan kita menggunakan environment variable dengan benar
+const HYGRAPH_ENDPOINT = process.env.HYGRAPH_ENDPOINT
+const HYGRAPH_TOKEN = process.env.HYGRAPH_TOKEN
 
-// Buat client dengan error handling yang lebih baik
-const createHygraphClient = () => {
-  try {
-    return new GraphQLClient(HYGRAPH_ENDPOINT, {
-      headers: {
-        ...(HYGRAPH_TOKEN && {
-          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-        }),
-      },
-    })
-  } catch (error) {
-    console.error("Failed to create Hygraph client:", error)
-    // Return a dummy client that will return empty data
-    return {
-      request: async () => {
-        console.warn("Using fallback data because Hygraph client failed to initialize")
-        return { projects: [] }
-      },
-    } as GraphQLClient
-  }
+// Log untuk debugging hanya di development
+if (process.env.NODE_ENV === "development") {
+  console.log("HYGRAPH_ENDPOINT set:", !!HYGRAPH_ENDPOINT)
+  console.log("HYGRAPH_TOKEN set:", !!HYGRAPH_TOKEN)
 }
 
-const hygraphClient = createHygraphClient()
+// Buat client hanya jika endpoint tersedia
+let hygraphClient: GraphQLClient
+
+if (HYGRAPH_ENDPOINT) {
+  hygraphClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
+    headers: {
+      // Tambahkan token API jika tersedia
+      ...(HYGRAPH_TOKEN && {
+        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+      }),
+    },
+  })
+} else {
+  // Create a dummy client that will throw meaningful errors
+  hygraphClient = new GraphQLClient("", {
+    headers: {},
+  })
+}
 
 export default hygraphClient
+
+// Export a function to check if Hygraph is configured
+export function isHygraphConfigured(): boolean {
+  return !!(HYGRAPH_ENDPOINT && HYGRAPH_TOKEN)
+}

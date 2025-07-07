@@ -16,6 +16,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'ap-south-1.cdn.hygraph.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'blob.v0.dev',
       },
       {

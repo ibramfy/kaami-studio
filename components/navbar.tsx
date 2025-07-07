@@ -118,63 +118,63 @@ export function Navbar() {
     <>
       {/* Main Header with Logo - No Background */}
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-12 lg:px-24 py-6`}
+        className={`fixed top-0 left-0 right-0 z-50 px-4 py-6 md:px-12 lg:px-24`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-between items-center">
-          <Logo />
+  <div className="flex justify-between items-center w-full">
+    {/* Logo with adjusted positioning */}
+    <div className="relative -ml-2 md:-ml-4 lg:-ml-10">
+      <Logo />
+    </div>
 
           {/* Toggle Button - Inside header container */}
-          <div className="flex justify-end pr-2">
-            <button
-              className="text-foreground focus:outline-none z-50 
-               md:absolute md:right-5 md:top-1/2 md:-translate-y-1/2"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </motion.header>
+    <button
+      className="relative text-foreground focus:outline-none z-50 
+                 md:absolute md:right-5 md:top-1/2 md:-translate-y-1/2"
+      onClick={toggleMenu}
+      aria-label="Toggle menu"
+    >
+      {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+    </button>
+  </div>
+</motion.header>
 
       {/* Desktop Right Sidebar Navigation - Always visible, text hidden until hover */}
-      <div
-        className={`fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col justify-center ${isOpen ? "md:hidden" : ""}`}
-      >
-        <motion.nav className="p-6 rounded-l-xl" initial={{ x: 0 }} animate={{ x: 0 }}>
-          <div className="flex flex-col space-y-8 items-end">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="group relative flex items-center text-lg transition-all duration-300"
-                onMouseEnter={() => setHoveredLink(link.href)}
-                onMouseLeave={() => setHoveredLink(null)}
-                onClick={(e) => scrollToSection(e, link.href)}
-              >
-                {/* Text that appears on hover */}
-                <motion.span
-                  className={`mr-2 transition-all duration-300 ${
-                    hoveredLink === link.href ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
-                  }`}
-                >
-                  {link.name}
-                </motion.span>
-
-                {/* Navigation Dot */}
-                <span className={`nav-dot ${activeSection === link.href ? "nav-dot-active" : ""}`} />
-              </a>
-            ))}
-            <div className="pt-4 border-t border-border w-full flex justify-end">
-              <ThemeSwitcher />
-            </div>
-          </div>
-        </motion.nav>
+<div className={`fixed top-0 right-0 bottom-0 z-30 hidden md:flex flex-col ${isOpen ? "md:hidden" : ""}`}>
+  {/* Container utama dengan grow untuk menempatkan nav di tengah */}
+  <div className="flex flex-col justify-center flex-grow">
+    <motion.nav className="p-6 rounded-l-xl" initial={{ x: 0 }} animate={{ x: 0 }}>
+      <div className="flex flex-col space-y-8 items-end">
+        {navLinks.map((link) => (
+          <a
+            key={link.name}
+            href={link.href}
+            className="group relative flex items-center text-lg transition-all duration-300"
+            onMouseEnter={() => setHoveredLink(link.href)}
+            onMouseLeave={() => setHoveredLink(null)}
+            onClick={(e) => scrollToSection(e, link.href)}
+          >
+            <motion.span
+              className={`mr-2 transition-all duration-300 ${
+                hoveredLink === link.href ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+              }`}
+            >
+              {link.name}
+            </motion.span>
+            <span className={`nav-dot ${activeSection === link.href ? "nav-dot-active" : ""}`} />
+          </a>
+        ))}
       </div>
+    </motion.nav>
+  </div>
 
+  {/* ThemeSwitcher tetap di bagian bawah */}
+  <div className="p-6 flex justify-end">
+    <ThemeSwitcher />
+  </div>
+</div>
       {/* Mobile Navigation Overlay */}
       <AnimatePresence>
         {isOpen && (

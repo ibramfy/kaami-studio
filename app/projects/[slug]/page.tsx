@@ -4,7 +4,7 @@ import Image from "next/image"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import Footer from "@/components/footer"
-import { getProjectById, getAllProjects } from "@/lib/project-service"
+import { getProjectBySlug, getAllProjects } from "@/lib/project-service"
 import { projects as fallbackProjects } from "@/data/projects" // Gunakan data statis sebagai fallback
 
 export const revalidate = 3600 // Revalidate every hour
@@ -15,32 +15,32 @@ export async function generateStaticParams() {
 
     if (projects.length === 0) {
       return fallbackProjects.map((project) => ({
-        id: project.id,
+        slug: project.slug,
       }))
     }
 
     return projects.map((project) => ({
-      id: project.id,
+      slug: project.slug,
     }))
   } catch (error) {
     console.error("Error generating static params:", error)
     return fallbackProjects.map((project) => ({
-      id: project.id,
+      slug: project.slug,
     }))
   }
 }
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
+  const { slug } = params
   let project = null
   let allProjects = []
 
   try {
-    project = await getProjectById(id)
+    project = await getProjectBySlug(slug)
 
     if (!project) {
       // Coba cari di data fallback
-      project = fallbackProjects.find((p) => p.id === id)
+      project = fallbackProjects.find((p) => p.slug === slug)
       if (!project) {
         notFound()
       }
@@ -62,10 +62,10 @@ export default async function ProjectPage({ params }: { params: { id: string } }
       }))
     }
   } catch (error) {
-    console.error(`Error fetching project with ID ${id}:`, error)
+    console.error(`Error fetching project with slug ${slug}:`, error)
 
     // Coba cari di data fallback
-    project = fallbackProjects.find((p) => p.id === id)
+    project = fallbackProjects.find((p) => p.slug === slug)
     if (!project) {
       notFound()
     }
@@ -85,7 +85,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
 
   // Fetch related projects (projects with similar categories)
   const relatedProjects = allProjects
-    .filter((p) => p.id !== project.id && p.categories.some((c) => project.categories.includes(c)))
+    .filter((p) => p.slug !== project.slug && p.categories.some((c) => project.categories.includes(c)))
     .slice(0, 3)
 
   return (
@@ -203,8 +203,8 @@ export default async function ProjectPage({ params }: { params: { id: string } }
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
                 {relatedProjects.map((relatedProject) => (
                   <Link
-                    key={relatedProject.id}
-                    href={`/projects/${relatedProject.id}`}
+                    key={relatedProject.slug}
+                    href={`/projects/${relatedProject.slug}`}
                     className="group block aspect-square relative overflow-hidden"
                   >
                     {relatedProject.coverImage ? (

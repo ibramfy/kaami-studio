@@ -74,7 +74,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
               onMouseLeave={() => setHoveredId(null)}
             >
               <motion.a
-                href={`/projects/${project.id}`}
+                href={`/projects/${project.slug}`}
                 className="block w-full h-full"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}

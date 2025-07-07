@@ -59,6 +59,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+            fontFamily: {
+        'urw-din': ['URW DIN', 'sans-serif'],
+        'din-condensed': ['DIN Condensed', 'sans-serif']
+      },  
+       textShadow: {
+        blackGlow: '0 1px 1px #000, 0 1px 2px #000, 0 2px 6px #000',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -152,7 +159,20 @@ const config: Config = {
       }),
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+
+  plugins:  [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    function ({ addUtilities, theme }) {
+      const shadows = theme('textShadow');
+      const newUtilities = Object.entries(shadows).reduce((acc, [key, value]) => {
+        acc[`.text-shadow-${key}`] = { textShadow: value };
+        return acc;
+      }, {});
+      addUtilities(newUtilities);
+    }
+  ],
 }
 
 export default config
+
