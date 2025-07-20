@@ -1,27 +1,30 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { ChevronDown, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import Footer from "@/components/footer"
 import { Navbar } from "@/components/navbar"
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import type { Project } from "@/types/project"
+import type { Team } from "@/types/team"
 import Image from "next/image"
+import { Swiper, SwiperSlide } from 'swiper/react'
+
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [teamMembers, setTeamMembers] = useState<Team[]>([])
+  const [projectsLoading, setProjectsLoading] = useState(true)
+  const [teamLoading, setTeamLoading] = useState(true)
+  const [projectsError, setProjectsError] = useState<string | null>(null)
+  const [teamError, setTeamError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchProjects() {
       try {
-        setLoading(true)
-        setError(null)
+        setProjectsLoading(true)
+        setProjectsError(null)
 
         // Try to fetch from API route first
         const response = await fetch("/api/projects")
@@ -47,18 +50,57 @@ export default function Home() {
           )
         } catch (fallbackError) {
           console.error("Failed to load fallback data:", fallbackError)
-          setError("Failed to load projects")
+          setProjectsError("Failed to load projects")
         }
       } finally {
-        setLoading(false)
+        setProjectsLoading(false)
+      }
+    }
+
+    async function fetchTeamMembers() {
+      try {
+        setTeamLoading(true)
+        setTeamError(null)
+
+        // Try to fetch from API route first
+        const response = await fetch("/api/team")
+
+        if (response.ok) {
+          const data = await response.json()
+          setTeamMembers(data.teamMembers || [])
+        } else {
+          throw new Error("Failed to fetch from API")
+        }
+      } catch (error) {
+        console.error("Failed to fetch team members:", error)
+
+        // Use fallback data if API fails
+        try {
+          const { teamMembers: fallbackTeamMembers } = await import("@/data/team")
+          setTeamMembers(
+            fallbackTeamMembers.map((member) => ({
+              ...member,
+              avatarImage: { url: "" },
+              heroImage: { url: "" },
+            })),
+          )
+        } catch (fallbackError) {
+          console.error("Failed to load fallback team data:", fallbackError)
+          setTeamError("Failed to load team members")
+        }
+      } finally {
+        setTeamLoading(false)
       }
     }
 
     fetchProjects()
+    fetchTeamMembers()
   }, [])
 
   // Ambil 6 project pertama untuk ditampilkan
   const featuredProjects = projects.slice(0, 6)
+  // Ambil 6 team members pertama untuk ditampilkan
+  const featuredTeamMembers = teamMembers.slice(0, 6)
 
 
   return (
@@ -395,68 +437,69 @@ export default function Home() {
 </section>
 
       {/* Projects Section */}
-<section
-  id="projects"
-  className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
->
-  <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
-    {/* Text Section (40%) */}
-    <div className="lg:col-span-2 flex flex-col justify-center">
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
+      <section
+        id="projects"
+        className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
       >
-        <p className="font-urw-din text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
-          Kreativitas Tanpa Batas
-        </p>
-        <h2 className="font-din-condensed text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-          Eksplorasi Desain Kami
-        </h2>
-        <p className="font-urw-din text-gray-600 dark:text-gray-300 mb-8">
-          "Karya orisinil, bukan project klien. Semua demi eksperimen visual terbaik."
-        </p>
-        
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          <button className="font-urw-din inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white rounded-lg transition-colors">
-            Lihat Semua Proyek
-            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-        </motion.div>
-      </motion.div>
-    </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
+          {/* Text Section (40%) */}
+          <div className="lg:col-span-2 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
+                Kreativitas Tanpa Batas
+              </p>
+              <h2 className="text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                Eksplorasi Desain Kami
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-8">
+                "Karya orisinil, bukan project klien. Semua demi eksperimen visual terbaik."
+              </p>
 
-    {/* Visual Grid (60%) - 6 items with solid hover */}
-    <div className="lg:col-span-3">
-      <motion.p 
-        className="font-urw-din text-gray-500 dark:text-gray-400 text-sm mb-6"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        Unduh katalog
-      </motion.p>
-      
-      {loading ? (
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400 }}>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white rounded-lg transition-colors"
+                >
+                  Lihat Semua Proyek
+                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Visual Grid (60%) - 6 items with solid hover */}
+          <div className="lg:col-span-3">
+            <motion.p
+              className="text-gray-500 dark:text-gray-400 text-sm mb-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Unduh katalog
+            </motion.p>
+
+            {projectsLoading ? (
               // Loading state
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                   <div
                     key={index}
-                    className="aspect-square bg-gray-200 dark:bg-gray-800 animate-pulse"
+                    className="aspect-square bg-gray-200 dark:bg-gray-800 animate-pulse rounded-lg"
                   ></div>
                 ))}
               </div>
-            ) : error ? (
+            ) : projectsError ? (
               // Error state
               <div className="text-center py-12">
-                <p className="text-red-500 mb-4">{error}</p>
+                <p className="text-red-500 mb-4">{projectsError}</p>
                 <button
                   onClick={() => window.location.reload()}
                   className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -528,9 +571,11 @@ export default function Home() {
 
                         {/* Centered text on hover */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center">
-                          <h3 className="font-din-condensed text-[1.5em] text-black dark:text-white font-bold text-lg mb-1">
+                          <h3 className="text-[1.5em] text-black dark:text-white font-bold text-lg mb-1">
                             {project.title}
                           </h3>
+                          <p className="text-sm text-black/70 dark:text-white/70">{project.categories.join(" • ")}</p>
+                          <p className="text-xs text-black/50 dark:text-white/50 mt-1">{project.year}</p>
                         </div>
                       </div>
                     </Link>
@@ -542,113 +587,201 @@ export default function Home() {
         </div>
       </section>
 
-<section
-  id="team"
-  className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
->
-  <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
-    {/* Visual Grid (60%) - Left Side (No Emoji) */}
-    <div className="lg:col-span-3 order-1 lg:order-none">
-      <motion.p 
-        className="font-urw-din text-gray-500 dark:text-gray-400 text-sm mb-6"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
+      {/* Team Section */}
+      <section
+        id="team"
+        className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
       >
-        Kenali tim kami lebih dekat
-      </motion.p>
-      
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {[...Array(6)].map((_, index) => (
-          <motion.div
-            key={index}
-            className="relative overflow-hidden"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative aspect-square w-full group">
-              {/* Plain avatar placeholder */}
-              <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800"></div>
-              
-              {/* Solid hover overlay */}
-              <div className="absolute inset-0 bg-white dark:bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              
-              {/* Centered text on hover */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center">
-                <h3 className="font-din-condensed text-[1.5em] text-black dark:text-white font-bold text-lg mb-1">
-                  Anggota {index + 1}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  {index % 3 === 0 ? "Arsitek" : index % 3 === 1 ? "Desainer" : "3D Artist"}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12">
+          {/* Visual Grid (60%) - Left Side */}
+          <div className="lg:col-span-3 order-1 lg:order-none">
+            <motion.p
+              className="text-gray-500 dark:text-gray-400 text-sm mb-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              Kenali tim kami lebih dekat
+            </motion.p>
 
-    {/* Text Section (40%) - Right Side with Heroicons */}
-    <div className="lg:col-span-2 order-2 lg:order-none flex flex-col justify-center">
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <p className="font-urw-din text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
-          Tim Profesional
-        </p>
-        <h2 className="font-din-condensed text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-          Tim <span className=" font-din-condensed text-purple-600 dark:text-purple-400">Berkualitas</span> Kami
-        </h2>
-        <p className="font-urw-din text-gray-600 dark:text-gray-300 mb-8">
-          "Dibackup oleh arsitek dan desainer bersertifikat dengan pengalaman lebih dari 10 tahun."
-        </p>
-        
-        {/*mmndlv_*/}
-        
-        <div className="space-y-3">
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            <span className="font-urw-din text-gray-700 dark:text-gray-300">Sertifikasi Internasional</span>
+            {teamLoading ? (
+              // Loading state
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="aspect-square bg-gray-200 dark:bg-gray-800 animate-pulse rounded-lg"
+                  ></div>
+                ))}
+              </div>
+            ) : teamError ? (
+              // Error state
+              <div className="text-center py-12">
+                <p className="text-red-500 mb-4">{teamError}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : featuredTeamMembers.length === 0 ? (
+              // No team members state - show placeholder grid
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, index) => (
+                  <motion.div
+                    key={index}
+                    className="relative overflow-hidden"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative aspect-square w-full group">
+                      {/* Plain avatar placeholder */}
+                      <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800"></div>
+
+                      {/* Solid hover overlay */}
+                      <div className="absolute inset-0 bg-white dark:bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                      {/* Centered text on hover */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center">
+                        <h3 className="text-[1.5em] text-black dark:text-white font-bold text-lg mb-1">
+                          Anggota {index + 1}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm">
+                          {index % 3 === 0 ? "Arsitek" : index % 3 === 1 ? "Desainer" : "3D Artist"}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {/* 6 team members */}
+                {featuredTeamMembers.map((member, index) => (
+                  <motion.div
+                    key={member.id}
+                    className="relative overflow-hidden"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <Link href={`/about/team/${member.slug}`}>
+                      <div className="relative aspect-square w-full group cursor-pointer">
+                        {/* Team Member Image */}
+                        <div className="absolute inset-0">
+                          {member.avatarImage?.url ? (
+                            <Image
+                              src={member.avatarImage.url || "/placeholder.svg"}
+                              alt={member.name}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 dark:bg-gray-800"></div>
+                          )}
+                        </div>
+
+                        {/* Solid hover overlay */}
+                        <div className="absolute inset-0 bg-white dark:bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        {/* Centered text on hover */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 text-center">
+                          <h3 className="text-[1.5em] text-black dark:text-white font-bold text-lg mb-1">
+                            {member.name}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">{member.position}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-              <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-            </svg>
-            <span className="font-urw-din text-gray-700 dark:text-gray-300">Lulusan Universitas Terbaik</span>
-          </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
-              <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-            </svg>
-            <span className="font-urw-din text-gray-700 dark:text-gray-300">Pengalaman 10+ Tahun</span>
+
+          {/* Text Section (40%) - Right Side with Heroicons */}
+          <div className="lg:col-span-2 order-2 lg:order-none flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
+                Tim Profesional
+              </p>
+              <h2 className="text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                Tim <span className="text-purple-600 dark:text-purple-400">Berkualitas</span> Kami
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-8">
+                "Dibackup oleh arsitek dan desainer bersertifikat dengan pengalaman lebih dari 10 tahun."
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-3 text-purple-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-gray-700 dark:text-gray-300">Sertifikasi Internasional</span>
+                </div>
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-3 text-purple-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+                    <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                  </svg>
+                  <span className="text-gray-700 dark:text-gray-300">Lulusan Universitas Terbaik</span>
+                </div>
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-3 text-purple-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
+                      clipRule="evenodd"
+                    />
+                    <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+                  </svg>
+                  <span className="text-gray-700 dark:text-gray-300">Pengalaman 10+ Tahun</span>
+                </div>
+              </div>
+              <motion.div className="mt-8" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400 }}>
+                <Link
+                  href="/about/team"
+                  className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white rounded-lg transition-colors"
+                >
+                  Kenali Tim Kami
+                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-
-        <motion.div
-          className="mt-8"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          <button className="font-urw-din inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white rounded-lg transition-colors">
-            Kenali Tim Kami
-            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-        </motion.div>
-      </motion.div>
-    </div>
-  </div>
-</section>
+      </section>
 
 <section className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black">
   <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
