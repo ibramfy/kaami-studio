@@ -9,8 +9,9 @@ import { motion } from "framer-motion"
 import type { Project } from "@/types/project"
 import type { Team } from "@/types/team"
 import Image from "next/image"
-import { Swiper, SwiperSlide } from 'swiper/react'
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -126,7 +127,7 @@ export default function Home() {
         />
 
         {/* Content with Animation */}
-        <div className="relative z-10 max-w-5xl w-full h-full">
+        <div className="relative z-10 max-w-5xl w-full mx-auto px-6 md:px-12 lg:px-24 h-full">
       <motion.h1
         className="font-din-condensed uppercase text-shadow-blackGlow text-white absolute left-[6%] bottom-[10%] origin-left"
         style={{
