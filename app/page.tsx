@@ -110,90 +110,63 @@ export default function Home() {
 
       {/* Hero Section */}
       <section
-        id="home"
-        className="h-screen flex flex-col justify-center relative px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 overflow-hidden"
-      >
-        {/* Background Image with Zoom Out Animation - Using gradient background as fallback */}
-        <motion.div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "linear-gradient(to right, #4a00e0, #8e2de2)",
-            // Uncomment the line below and replace with your actual image path when available
-            // backgroundImage: "url('/images/herosection.jpg')",
-          }}
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-        />
-
-        {/* Content with Animation */}
-        <div className="relative z-10 max-w-5xl w-full mx-auto px-6 md:px-12 lg:px-24 h-full">
-      <motion.h1
-        className="font-din-condensed uppercase text-shadow-blackGlow text-white absolute left-[6%] bottom-[10%] origin-left"
-        style={{
-          fontSize: 'clamp(2rem, 6vw, 5rem)',
-          lineHeight: '0.9', // Untuk tampilan yang lebih compact
-          maxWidth: '90%' // Mencegah teks keluar layar
-        }}
-        initial={{
-          opacity: 0,
-          scale: 1.85,
-          x: 0,
-          y: 10
-        }}
-        animate={{
-          opacity: 1,
-          scale: 0.85,
-        }}
-        transition={{
-          duration: 1.5,
-          ease: [0.22, 1, 0.36, 1],
-          delay: 0.2 // Optional delay
-        }}
-        // Responsive adjustment
-        viewport={{ once: true }}
-        whileInView={{
-          opacity: 1,
-          scale: 0.85,
-        }}
-      >
-          Desain Rumah Impian dengan Teknologi 3D Terdepan
-        </motion.h1>
-
-  {/* Subtitle - Now mobile-optimized */}
-  <motion.p
-    className="font-urw-din text-shadow-blackGlow text-white absolute left-[6%] w-[90%] whitespace-nowrap overflow-x-hidden"
+  id="home"
+  className="h-screen flex flex-col justify-end relative px-4 sm:px-6 md:px-12 lg:px-24 py-12 overflow-hidden"
+>
+  {/* Background image */}
+  <motion.div
+    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
     style={{
-      top: "calc(75% + 6rem)",
-      fontSize: 'clamp(0.65rem, 2.5vw, 1.25rem)', // More aggressive mobile scaling
-      lineHeight: '1.5',
-      textOverflow: 'ellipsis'
+      backgroundImage: "linear-gradient(to right, #4a00e0, #8e2de2)",
     }}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ 
-      duration: 0.5,
-      delay: 1.7,
-      ease: "easeIn" 
-    }}
-  >
-    <span className="inline-block min-w-full">
-      Proses Transparan | Harga Jujur | Garansi Kepuasan
-    </span>
-  </motion.p>
-</div>
+    initial={{ scale: 1.2 }}
+    animate={{ scale: 1 }}
+    transition={{ duration: 2, ease: "easeOut" }}
+  />
 
-        <motion.div
-          className="absolute bottom-12 left-0 right-0 flex justify-center z-10"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          transition={{ duration: 1, delay: 4 }}
-        >
-          <div className="animate-bounce">
-            <ChevronDown className="w-6 h-6 text-white/70" />
-          </div>
-        </motion.div>
-      </section>
+  {/* Text Content */}
+  <div className="relative z-10 max-w-5xl w-full">
+    <motion.h1
+      className="font-din-condensed uppercase text-shadow-blackGlow text-white text-left"
+      style={{
+        fontSize: "clamp(2rem, 6vw, 5rem)",
+        lineHeight: "1.1",
+      }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+    >
+      Desain Rumah Impian dengan Teknologi 3D Terdepan
+    </motion.h1>
+
+    <motion.p
+      className="font-urw-din text-shadow-blackGlow text-white text-left mt-4 max-w-xl"
+      style={{
+        fontSize: "clamp(0.8rem, 2.2vw, 1.25rem)",
+        lineHeight: "1.6",
+      }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, ease: "easeOut", delay: 1.2 }}
+    >
+      Proses Transparan | Harga Jujur | Garansi Kepuasan
+    </motion.p>
+  </div>
+
+  {/* Scroll indicator */}
+  <motion.div
+    className="absolute bottom-4 left-0 right-0 flex justify-center z-10"
+    initial={{ opacity: 1 }}
+    animate={{ opacity: 0 }}
+    transition={{ duration: 1, delay: 4 }}
+  >
+    <div className="animate-bounce">
+      <ChevronDown className="w-6 h-6 text-white/70" />
+    </div>
+  </motion.div>
+</section>
+
+
 
 <section
   id="features"
