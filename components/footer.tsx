@@ -1,85 +1,71 @@
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border px-6 md:px-12 lg:px-24 py-12 transition-theme">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div>
-            <h3 className="text-xl portfolio-font flex items-center mb-4">
-              <span className="mr-2">KAAMI</span>
-              <span className="text-outline">ARSITEK STUDIO</span>
-            </h3>
-            <p className="text-muted-foreground">
-              Creative Developer & Designer
-              <br />
-              Based in New York
-            </p>
-          </div>
+    <footer className="relative px-6 md:px-12 lg:px-24 py-12 bg-white dark:bg-black">
+      {/* Geometric Perspective Divider */}
+      <div className="absolute top-0 left-0 right-0 h-20 -translate-y-full overflow-hidden">
+        <svg 
+          viewBox="0 0 1200 80" 
+          preserveAspectRatio="none" 
+          className="w-full h-full"
+        >
+          {/* Base Layer */}
+          <path 
+            d="M0,0 L1200,0" 
+            stroke="currentColor" 
+            strokeWidth="0.5" 
+            className="text-border opacity-20"
+          />
+          
+          {/* Main Perspective Lines */}
+          <path 
+            d="M0,80 L600,0 L1200,80" 
+            stroke="currentColor" 
+            strokeWidth="1.2" 
+            fill="none"
+            className="text-border"
+          />
+          
+          {/* Secondary Lines */}
+          <path 
+            d="M150,80 L600,20 L1050,80" 
+            stroke="currentColor" 
+            strokeWidth="0.8" 
+            fill="none"
+            className="text-border opacity-70"
+          />
+          
+          {/* Tertiary Lines */}
+          <path 
+            d="M300,80 L600,40 L900,80" 
+            stroke="currentColor" 
+            strokeWidth="0.5" 
+            fill="none"
+            className="text-border opacity-50"
+          />
+        </svg>
+      </div>
 
-          <div>
-            <h3 className="text-lg font-medium mb-4">Links</h3>
-            <ul className="space-y-2 text-zinc-400">
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-foreground transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/projects" className="hover:text-foreground transition-colors">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link href="/pricing" className="hover:text-foreground transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/#contact" className="hover:text-foreground transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium mb-4">Social</h3>
-            <ul className="space-y-2 text-zinc-400">
-              <li>
-                <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                  Twitter <ArrowUpRight className="ml-1 w-4 h-4" />
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                  Instagram <ArrowUpRight className="ml-1 w-4 h-4" />
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                  LinkedIn <ArrowUpRight className="ml-1 w-4 h-4" />
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                  GitHub <ArrowUpRight className="ml-1 w-4 h-4" />
-                </Link>
-              </li>
-            </ul>
-          </div>
+      {/* Konten Footer */}
+      <div className="max-w-5xl mx-auto text-center">
+        {/* Branding */}
+        <div className="mb-8">
+          <h3 className="text-2xl portfolio-font flex justify-center items-center mb-3">
+            <span className="mr-2">KAAMI</span>
+            <span className="text-outline">ARCHITECTURE</span>
+          </h3>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
+            Crafting spaces with precision and visionary design.
+          </p>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center text-muted-foreground text-sm">
-          <p>© {new Date().getFullYear()} KAAMI ARSITEK STUDIO. All rights reserved.</p>
-          <div className="mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-white transition-colors mr-6">
+        {/* Copyright */}
+        <div className="mt-8 pt-6 border-t border-border text-muted-foreground text-xs flex flex-col md:flex-row justify-center items-center gap-3">
+          <span>© {new Date().getFullYear()} KAAMI ARCHITECTURE STUDIO</span>
+          <span className="hidden md:inline">|</span>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
             <Link href="/terms" className="hover:text-white transition-colors">

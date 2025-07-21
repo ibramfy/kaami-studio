@@ -12,6 +12,9 @@ import Image from "next/image"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { Instagram, Facebook, MessageCircle, Mail, Music } from 'lucide-react'
+import { FaInstagram, FaFacebookF, FaWhatsapp, FaEnvelope, FaTiktok } from 'react-icons/fa'
+
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -117,7 +120,7 @@ export default function Home() {
   <motion.div
     className="absolute inset-0 bg-cover bg-center bg-no-repeat"
     style={{
-      backgroundImage: "linear-gradient(to right, #4a00e0, #8e2de2)",
+      backgroundImage: "url('images/hero.jpg')",
     }}
     initial={{ scale: 1.2 }}
     animate={{ scale: 1 }}
@@ -125,32 +128,57 @@ export default function Home() {
   />
 
   {/* Text Content */}
-  <div className="relative z-10 max-w-5xl w-full">
+  <div className="relative z-10 max-w-5xl w-full mb-8 sm:mb-0">
     <motion.h1
       className="font-din-condensed uppercase text-shadow-blackGlow text-white text-left"
-      style={{
-        fontSize: "clamp(2rem, 6vw, 5rem)",
-        lineHeight: "1.1",
-      }}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-    >
+  style={{
+    fontSize: "clamp(2rem, 6vw, 5rem)",
+    lineHeight: "1.1",
+    display: "inline-block",
+  }}
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={{ opacity: 1, scale: 1 }}
+  whileHover={{ y: -8, scale: 1.02, opacity: 1 }}
+  whileTap={{ y: -8, scale: 1.02, opacity: 1 }}
+  transition={{
+    type: "spring",
+    stiffness: 250,
+    damping: 20,
+  }}
+>
       Desain Rumah Impian dengan Teknologi 3D Terdepan
     </motion.h1>
 
-    <motion.p
-      className="font-urw-din text-shadow-blackGlow text-white text-left mt-4 max-w-xl"
-      style={{
-        fontSize: "clamp(0.8rem, 2.2vw, 1.25rem)",
-        lineHeight: "1.6",
+    <motion.div
+  className="font-urw-din text-shadow-blackGlow text-white text-left mt-4 max-w-xl"
+  style={{
+    fontSize: "clamp(0.8rem, 2.2vw, 1.25rem)",
+    lineHeight: "1.6",
+  }}
+  initial={{ opacity: 0, scale: 0.95 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 1, ease: "easeOut", delay: 1.2 }}
+>
+  <div className="relative inline-block overflow-hidden h-[1.6em]">
+    <motion.span
+      className="block"
+      whileHover={{ y: "-100%" }}
+      whileTap={{ y: "-100%" }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
       }}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, ease: "easeOut", delay: 1.2 }}
     >
-      Proses Transparan | Harga Jujur | Garansi Kepuasan
-    </motion.p>
+      <span className="block">
+        Proses Transparan | Harga Jujur | Garansi Kepuasan
+      </span>
+      <span className="block absolute top-full left-0">
+        Proses Transparan | Harga Jujur | Garansi Kepuasan
+      </span>
+    </motion.span>
+  </div>
+</motion.div>
   </div>
 
   {/* Scroll indicator */}
@@ -166,8 +194,7 @@ export default function Home() {
   </motion.div>
 </section>
 
-
-
+{/* features */}
 <section
   id="features"
   className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
@@ -911,74 +938,79 @@ export default function Home() {
 </section>
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16"
+<section
+  id="contact"
+  className="min-h-screen px-4 py-16 sm:px-6 lg:px-24 bg-white dark:bg-black text-zinc-900 dark:text-zinc-100"
+>
+  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[61.8%_auto] gap-12 items-start">
+    
+    {/* Kontak & Sosial */}
+    <div className="space-y-6">
+      <motion.h2
+        className="text-3xl sm:text-4xl md:text-5xl font-bold"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
       >
-        <div className="max-w-5xl mx-auto">
-          <motion.h2
-            className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            Let&apos;s Work Together
-          </motion.h2>
+        Hubungi Kami
+      </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-lg md:text-xl text-zinc-300 mb-6">
-                I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your
-                vision.
-              </p>
-              <Link
-                href="mailto:hello@example.com"
-                className="inline-flex items-center text-lg sm:text-xl font-medium border-b-2 border-purple-500 pb-1 hover:text-purple-400 transition-colors"
-              >
-                hello@example.com
-                <ArrowUpRight className="ml-2 w-4 h-4" />
-              </Link>
-            </motion.div>
+      <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
+        Kami terbuka untuk diskusi, kerja sama proyek, maupun konsultasi. <br />
+        Silakan kirim pesan, kami akan segera menghubungi kembali.
+      </p>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-lg sm:text-xl font-semibold mb-4">Connect</h3>
-              <ul className="space-y-3 text-zinc-400">
-                <li>
-                  <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                    Twitter <ArrowUpRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                    Instagram <ArrowUpRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                    LinkedIn <ArrowUpRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="inline-flex items-center hover:text-white transition-colors">
-                    GitHub <ArrowUpRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm font-medium">
+        <Link href="#" className="flex items-center gap-2 hover:text-purple-500 transition-colors">
+          <Instagram className="w-5 h-5" /> Instagram
+        </Link>
+        <Link href="#" className="flex items-center gap-2 hover:text-purple-500 transition-colors">
+          <Facebook className="w-5 h-5" /> Facebook
+        </Link>
+        <Link href="#" className="flex items-center gap-2 hover:text-purple-500 transition-colors">
+          <MessageCircle className="w-5 h-5" /> WhatsApp
+        </Link>
+        <Link href="#" className="flex items-center gap-2 hover:text-purple-500 transition-colors">
+          <Mail className="w-5 h-5" /> Email
+        </Link>
+        <Link href="#" className="flex items-center gap-2 hover:text-purple-500 transition-colors">
+          <Music className="w-5 h-5" /> TikTok
+        </Link>
+      </div>
+    </div>
+
+    {/* Map */}
+    {/* Map Container */}
+<div className="space-y-4"> {/* Container untuk map + alamat */}
+  <motion.div
+    className="rounded-xl overflow-hidden shadow-lg aspect-video"
+    initial={{ opacity: 0, x: 50 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.8, delay: 0.2 }}
+    viewport={{ once: true }}
+  >
+    <iframe
+      src="https://www.google.com/maps/embed?..."
+      className="w-full h-full"
+      loading="lazy"
+      allowFullScreen
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </motion.div>
+
+  {/* Alamat di bawah map */}
+  <div className="text-sm text-zinc-600 dark:text-zinc-400 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
+    <p className="font-medium">Studio Kaami</p>
+    <p>Jl. Arsitektur No. 88, Bandung</p>
+    <p>Buka: Senin – Jumat, 09.00 – 17.00</p>
+  </div>
+</div>
+
+  </div>
+</section>
+
+
 
       <Footer />
     </main>
