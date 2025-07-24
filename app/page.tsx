@@ -113,19 +113,19 @@ export default function Home() {
 
       {/* Hero Section */}
       <section
-  id="home"
-  className="h-screen flex flex-col justify-end relative px-4 sm:px-6 md:px-12 lg:px-24 py-12 overflow-hidden"
->
-  {/* Background image */}
-  <motion.div
-    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style={{
-      backgroundImage: "url('images/hero.jpg')",
-    }}
-    initial={{ scale: 1.2 }}
-    animate={{ scale: 1 }}
-    transition={{ duration: 2, ease: "easeOut" }}
-  />
+      id="home"
+      className="h-screen flex flex-col justify-end relative px-4 sm:px-6 md:px-12 lg:px-24 py-12 overflow-hidden"
+    >
+      {/* Background image */}
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+        backgroundImage: "url('images/hero.jpg')",
+        }}
+        initial={{ scale: 1.2 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      />
 
   {/* Text Content */}
   <div className="relative z-10 max-w-5xl w-full mb-8 sm:mb-0">
@@ -178,7 +178,7 @@ export default function Home() {
       </span>
     </motion.span>
   </div>
-</motion.div>
+  </motion.div>
   </div>
 
   {/* Scroll indicator */}
