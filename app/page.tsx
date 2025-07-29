@@ -120,7 +120,7 @@ export default function Home() {
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-        backgroundImage: "url('images/hero.jpg')",
+        backgroundImage: "url('images/herosection.jpg')",
         }}
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
@@ -195,144 +195,250 @@ export default function Home() {
 </section>
 
 {/* features */}
-<section
-  id="features"
-  className="min-h-screen flex flex-col justify-center px-2 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 bg-white dark:bg-black"
->
-  <div className="max-w-5xl mx-auto flex flex-col gap-y-12 sm:gap-y-16">
-    <motion.div
-      className="flex flex-col items-center"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
+<section className="relative min-h-screen w-full bg-white dark:bg-black overflow-hidden flex items-center justify-center p-4 md:p-8">
+  <div className="relative w-full h-[50vh] md:h-[70vh] max-w-6xl">
+
+    {/* === Mobile Images (rectangular with <rect>) === */}
+    <div className="flex-row flex gap-x-4 overflow-x-auto md:hidden">
+      {/* Image 1 */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 182" className="w-[20vw] min-w-[71px] h-[25vh] min-h-[182px]" preserveAspectRatio="none">
+        <defs>
+          <clipPath id="mobileClip1">
+            <rect width="71" height="182" />
+          </clipPath>
+        </defs>
+        <image
+          href="/images/1.webp"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#mobileClip1)"
+        />
+      </svg>
+      
+      {/* Full Image on Hover */}
+        <img
+        src="/images/1.webp"
+        alt=""
+        className="absolute top-0 left-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        />
+
+      {/* Image 2 */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 184" className="w-[20vw] min-w-[73px] h-[25vh] min-h-[184px]" preserveAspectRatio="none">
+        <defs>
+          <clipPath id="mobileClip2">
+            <rect width="73" height="184" />
+          </clipPath>
+        </defs>
+        <image
+          href="/images/2.webp"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#mobileClip2)"
+        />
+      </svg>
+
+      {/* Image 3 */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82 149" className="w-[20vw] min-w-[82px] h-[20vh] min-h-[149px]" preserveAspectRatio="none">
+        <defs>
+          <clipPath id="mobileClip3">
+            <rect width="82" height="149" />
+          </clipPath>
+        </defs>
+        <image
+          href="/images/3.webp"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#mobileClip3)"
+        />
+      </svg>
+
+      {/* Image 4 */}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 110" className="w-[20vw] min-w-[54px] h-[15vh] min-h-[110px]" preserveAspectRatio="none">
+        <defs>
+          <clipPath id="mobileClip4">
+            <rect width="54" height="110" />
+          </clipPath>
+        </defs>
+        <image
+          href="/images/4.webp"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid slice"
+          clipPath="url(#mobileClip4)"
+        />
+      </svg>
+    </div>
+
+    {/* === Desktop Images with clipPath shape === */}
+<div className="hidden md:block">
+  {/* Container untuk SVG + Hover Effect */}
+  <div className="
+    absolute w-[10vw] md:w-[8vw] min-w-[71px] h-[25vh] md:h-[30vh] min-h-[182px] 
+    top-[27%] left-[25%] origin-top-left
+    group md:scale-[1.5] z-0 hover:z-50
+  ">
+    {/* SVG Asli (Normal State) */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 71 182"
+      className="max-h-full aspect-[71/182] group-hover:opacity-0 transition-opacity duration-300"
+      preserveAspectRatio="none"
     >
-      <p className="font-urw-din text-purple-600 dark:text-purple-400 text-lg uppercase font-semibold tracking-wider mb-4">
-        Kenapa Kami Berbeda
-      </p>
-      <h2 className="font-din-condensed text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white">
-        Pendekatan Unik Kaami Studio
-      </h2>
-    </motion.div>
+      <defs>
+        <clipPath id="clip1">
+          <path d="M0 0H71V182H7L0 0Z" />
+        </clipPath>
+      </defs>
+      <image
+        href="/images/1.webp"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#clip1)"
+      />
+    </svg>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-      {/* Feature 1 - 3D Rendering */}
-      <motion.div
-        className="flex flex-col items-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="h-32 w-32 mb-6 flex items-center justify-center"
-          animate={{ rotate: 360 }}
-          transition={{duration: 10, repeat: Infinity, ease: "linear"}}
-          style={{ transformStyle: 'preserve-3d' }}
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={1.5}
-            stroke="currentColor" 
-            className="w-full h-full text-purple-600 dark:text-purple-400"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              d="m21 7.5-2.25-1.313M21 7.5v2.25m0-2.25-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3 2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75 2.25-1.313M12 21.75V19.5m0 2.25-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" 
-            />
-          </svg>
-        </motion.div>
-        <h3 className="font-urw-din text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">
-          3D Rendering Real-time
-        </h3>
-        <p className="font-urw-din text-gray-600 dark:text-gray-300 text-center text-sm sm:text-base">
-          Visualisasi proyek secara realistik sebelum pembangunan dimulai
-        </p>
-      </motion.div>
+    {/* Gambar Full-Size (Hover State) */}
+    <div className="
+      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
+      hidden group-hover:block z-50
+    ">
+      <img
+        src="/images/1.webp"
+        alt="Full Preview"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
 
-      {/* Feature 2 - International Methodology */}
-      <motion.div
-        className="flex flex-col items-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="h-32 w-32 mb-6 flex items-center justify-center"
-          animate={{ rotateY: 360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          style={{ transformStyle: 'preserve-3d' }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-full h-full text-purple-600 dark:text-purple-400"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 002.288-4.042 1.087 1.087 0 00-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 01-.98-.314l-.295-.295a1.125 1.125 0 010-1.591l.13-.132a1.125 1.125 0 011.3-.21l.603.302a.809.809 0 001.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 001.528-1.732l.146-.292M6.115 5.19A9 9 0 1017.18 4.64M6.115 5.19A8 8 0 1112 2.055"
-            />
-          </svg>
-        </motion.div>
-        <h3 className="font-urw-din text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">
-          Metodologi Internasional
-        </h3>
-        <p className="font-urw-din text-gray-600 dark:text-gray-300 text-center text-sm sm:text-base">
-          Standar desain global dengan sentuhan lokal untuk hasil terbaik
-        </p>
-      </motion.div>
+        {/* Image 2 */}
+  <div className="
+    absolute w-[10vw] md:w-[8vw] min-w-[73px] h-[25vh] md:h-[30vh] min-h-[184px] 
+    top-[33%] left-[38%] origin-top-left
+    group md:scale-[1.5] z-0 hover:z-50
+  ">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 73 184"
+      className="max-h-full aspect-[73/184] group-hover:opacity-0 transition-opacity duration-300"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <clipPath id="clip2">
+          <path d="M0 0H51L73 164L0 184V0Z" />
+        </clipPath>
+      </defs>
+      <image
+        href="/images/2.webp"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#clip2)"
+      />
+    </svg>
 
-      {/* Feature 3 - No Hidden Cost */}
-      <motion.div
-        className="flex flex-col items-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="h-32 w-32 mb-6 flex items-center justify-center"
-          initial={{ opacity: 0.3 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-full h-full text-purple-600 dark:text-purple-400"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
-            />
-          </svg>
-        </motion.div>
-        <h3 className="font-urw-din text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">
-          Tanpa Hidden Cost
-        </h3>
-        <p className="font-urw-din text-gray-600 dark:text-gray-300 text-center text-sm sm:text-base">
-          Transparansi biaya dari awal tanpa kejutan di akhir proyek
-        </p>
-      </motion.div>
+    <div className="
+      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
+      hidden group-hover:block z-50
+    ">
+      <img
+        src="/images/2.webp"
+        alt="Full Preview"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+
+  {/* Image 3 */}
+  <div className="
+    absolute w-[11vw] md:w-[9vw] min-w-[82px] h-[20vh] md:h-[25vh] min-h-[149px] 
+    top-[24%] left-[48%] origin-top-left
+    group md:scale-[1.5] z-0 hover:z-50
+  ">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 82 149"
+      className="max-h-full aspect-[82/149] group-hover:opacity-0 transition-opacity duration-300"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <clipPath id="clip3">
+          <path d="M0 12L56 0L82 149H17L0 12Z" />
+        </clipPath>
+      </defs>
+      <image
+        href="/images/3.webp"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#clip3)"
+      />
+    </svg>
+
+    <div className="
+      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
+      hidden group-hover:block z-50
+    ">
+      <img
+        src="/images/3.webp"
+        alt="Full Preview"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+
+  {/* Image 4 */}
+  <div className="
+    absolute w-[8vw] md:w-[6vw] min-w-[54px] h-[15vh] md:h-[20vh] min-h-[110px] 
+    top-[27%] left-[60%] origin-top-left
+    group md:scale-[1.5] z-0 hover:z-50">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 54 110"
+      className="max-h-full aspect-[54/110] group-hover:opacity-0 transition-opacity duration-300"
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <clipPath id="clip4">
+          <path d="M0 0H54V110H19L0 0Z" />
+        </clipPath>
+      </defs>
+      <image
+        href="/images/4.webp"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#clip4)"
+      />
+    </svg>
+
+    <div className="
+      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
+      hidden group-hover:block z-50
+    ">
+      <img
+        src="/images/4.webp"
+        alt="Full Preview"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</div>
+
+    {/* === Text === */}
+    <div className="absolute text-gray-900 dark:text-white text-xs md:text-lg top-[37%] left-[12%] w-[28%] md:w-[15%] leading-normal">
+      tempek nyell
+    </div>
+    <div className="absolute w-[19%] md:w-[10%] top-[18%] left-[26%] font-normal text-gray-900 dark:text-white text-xs md:text-lg tracking-[0] leading-[normal]">
+      TEMPEK
     </div>
   </div>
 </section>
+
+
 
 <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 bg-white dark:bg-black">
   <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
@@ -451,10 +557,10 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <p className="text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
+              <p className="font-urw-din text-purple-600 dark:text-purple-400 text-sm uppercase tracking-wider mb-4">
                 Kreativitas Tanpa Batas
               </p>
-              <h2 className="text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              <h2 className="font-din-condensed text-gray-900 dark:text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
                 Eksplorasi Desain Kami
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-8">
