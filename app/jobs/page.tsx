@@ -19,18 +19,62 @@ export default async function JobsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-24 bg-white dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Karir Bersama Kami</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Bergabunglah dengan tim yang passionate dalam menciptakan solusi digital inovatif
+    <div className="min-h-screen bg-white dark:bg-black">
+  <div className="max-w-6xl mx-auto px-6 lg:px-12 py-24">
+    {/* Header */}
+    <div className="mb-24">
+      <h1 className="font-urw-din text-4xl lg:text-6xl font-light tracking-tight text-foreground mb-10 leading-tight lg:leading-[1.2]">
+        Bangun Ruang, Tanpa Sekat<br className="hidden lg:block" />— Termasuk di Dalam Tim Kaami
+      </h1>
+      <p className="font-urw-din text-base lg:text-xl text-muted-foreground max-w-3xl leading-relaxed">
+        Di <span className="font-semibold">KAAMI STUDIO</span>, kami percaya bahwa arsitektur hebat lahir dari dialog yang jujur, terbuka, dan setara.
+        Tidak ada atasan yang tak bisa dikritik, tidak ada ide yang tak bisa dipertanyakan.
+        Kami tidak bekerja dalam sistem hierarki kaku. Kami bekerja sebagai <span className="italic">kolektif pemikir</span> — saling menantang, saling mendengarkan, dan tumbuh bersama di setiap proyek yang kami rancang.
+      </p>
+    </div>
+
+    {/* Nilai-nilai kerja */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-16">
+      <div>
+        <h2 className="font-urw-din text-lg font-medium text-foreground mb-4 tracking-wide uppercase">Keterbukaan Tanpa Ego</h2>
+        <p className="font-urw-din text-muted-foreground text-base leading-relaxed">
+          Kami mendesain ruang seperti kami membangun tim: tanpa sekat yang menghalangi kolaborasi.
+          Setiap suara berarti, setiap pendapat penting.
+        </p>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-medium text-foreground mb-4 tracking-wide uppercase">Ide Terbaik Menentukan Arah</h2>
+        <p className="text-muted-foreground text-base leading-relaxed">
+          Bukan jabatan yang menentukan keputusan, tapi kualitas gagasan. Sketsa sederhana pun bisa memicu diskusi besar — dan kami rayakan itu.
+        </p>
+      </div>
+
+      <div>
+        <h2 className="font-urw-din text-lg font-medium text-foreground mb-4 tracking-wide uppercase">Proses = Tempat Belajar</h2>
+        <p className="font-urw-din text-muted-foreground text-base leading-relaxed">
+          Kami percaya pada proses iteratif: mencoba, mengkritik, memperbaiki, dan tumbuh bersama. Kamu tidak diharapkan sempurna — hanya jujur dan eksploratif.
+        </p>
+      </div>
+    </div>
+
+    {/* Call to Action */}
+    <div className="mt-32 lg:mt-40 border-t border-border pt-16">
+      <div className="lg:flex items-end justify-between">
+        <div className="max-w-xl">
+          <h3 className="font-urw-din text-2xl lg:text-3xl font-medium text-foreground mb-4">
+            Apakah Kamu Orang yang Kami Cari?
+          </h3>
+          <p className="font-urw-din text-muted-foreground text-base lg:text-lg leading-relaxed">
+            Jika kamu ingin bekerja dalam tim setara, terbuka, dan terus belajar lewat dialog desain yang jujur —
+            mungkin tempatmu memang ada di sini.
           </p>
-        </div>
+        </div>        
+      </div>
+    </div>
 
         {/* Jobs Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {jobs.map((job, index) => (
             <div
               key={job.id}
@@ -44,23 +88,23 @@ export default async function JobsPage() {
                   <MapPin className="w-3 h-3 mr-1" />
                   {job.workModel}
                 </span>
-                <span className="text-xs text-muted-foreground flex items-center">
+                <span className="font-urw-din text-xs text-muted-foreground flex items-center">
                   <Clock className="w-3 h-3 mr-1" />
                   {new Date(job.createdAt).toLocaleDateString("id-ID")}
                 </span>
               </div>
 
               {/* Job Title */}
-              <h3 className="text-xl font-semibold text-foreground mb-3">{job.jobtitle}</h3>
+              <h3 className="font-urw-din text-xl font-semibold text-foreground mb-3">{job.jobtitle}</h3>
 
               {/* Description */}
-              <p className="text-muted-foreground mb-6 line-clamp-3">{job.description}</p>
+              <p className="font-urw-din text-muted-foreground mb-6 line-clamp-3">{job.description}</p>
 
               {/* Actions */}
               <div className="flex gap-3">
                 <Link
                   href={`/jobs/${job.slug}`}
-                  className="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md text-center hover:bg-primary/90 transition-colors"
+                  className="font-urw-din flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md text-center hover:bg-primary/90 transition-colors"
                 >
                   Lihat Detail
                 </Link>

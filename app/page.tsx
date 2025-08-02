@@ -13,8 +13,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Instagram, Facebook, MessageCircle, Mail, Music } from 'lucide-react'
-import { FaInstagram, FaFacebookF, FaWhatsapp, FaEnvelope, FaTiktok } from 'react-icons/fa'
-
+import useEmblaCarousel from "embla-carousel-react"
+import Autoplay from "embla-carousel-autoplay"
+import { Plus } from "lucide-react"
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -23,6 +24,19 @@ export default function Home() {
   const [teamLoading, setTeamLoading] = useState(true)
   const [projectsError, setProjectsError] = useState<string | null>(null)
   const [teamError, setTeamError] = useState<string | null>(null)
+
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 3000, stopOnInteraction: false })])
+
+  const images = [
+    { src: "/images/1.webp", alt: "Placeholder Image 1" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 2", alt: "Placeholder Image 2" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 3", alt: "Placeholder Image 3" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 4", alt: "Placeholder Image 4" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 5", alt: "Placeholder Image 5" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 6", alt: "Placeholder Image 6" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 7", alt: "Placeholder Image 7" },
+    { src: "/placeholder.svg?height=400&width=600&text=Image 8", alt: "Placeholder Image 8" },
+  ]
 
   useEffect(() => {
     async function fetchProjects() {
@@ -195,248 +209,47 @@ export default function Home() {
 </section>
 
 {/* features */}
-<section className="relative min-h-screen w-full bg-white dark:bg-black overflow-hidden flex items-center justify-center p-4 md:p-8">
-  <div className="relative w-full h-[50vh] md:h-[70vh] max-w-6xl">
-
-    {/* === Mobile Images (rectangular with <rect>) === */}
-    <div className="flex-row flex gap-x-4 overflow-x-auto md:hidden">
-      {/* Image 1 */}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 182" className="w-[20vw] min-w-[71px] h-[25vh] min-h-[182px]" preserveAspectRatio="none">
-        <defs>
-          <clipPath id="mobileClip1">
-            <rect width="71" height="182" />
-          </clipPath>
-        </defs>
-        <image
-          href="/images/1.webp"
-          width="100%"
-          height="100%"
-          preserveAspectRatio="xMidYMid slice"
-          clipPath="url(#mobileClip1)"
-        />
-      </svg>
-      
-      {/* Full Image on Hover */}
-        <img
-        src="/images/1.webp"
-        alt=""
-        className="absolute top-0 left-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        />
-
-      {/* Image 2 */}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 184" className="w-[20vw] min-w-[73px] h-[25vh] min-h-[184px]" preserveAspectRatio="none">
-        <defs>
-          <clipPath id="mobileClip2">
-            <rect width="73" height="184" />
-          </clipPath>
-        </defs>
-        <image
-          href="/images/2.webp"
-          width="100%"
-          height="100%"
-          preserveAspectRatio="xMidYMid slice"
-          clipPath="url(#mobileClip2)"
-        />
-      </svg>
-
-      {/* Image 3 */}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82 149" className="w-[20vw] min-w-[82px] h-[20vh] min-h-[149px]" preserveAspectRatio="none">
-        <defs>
-          <clipPath id="mobileClip3">
-            <rect width="82" height="149" />
-          </clipPath>
-        </defs>
-        <image
-          href="/images/3.webp"
-          width="100%"
-          height="100%"
-          preserveAspectRatio="xMidYMid slice"
-          clipPath="url(#mobileClip3)"
-        />
-      </svg>
-
-      {/* Image 4 */}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 110" className="w-[20vw] min-w-[54px] h-[15vh] min-h-[110px]" preserveAspectRatio="none">
-        <defs>
-          <clipPath id="mobileClip4">
-            <rect width="54" height="110" />
-          </clipPath>
-        </defs>
-        <image
-          href="/images/4.webp"
-          width="100%"
-          height="100%"
-          preserveAspectRatio="xMidYMid slice"
-          clipPath="url(#mobileClip4)"
-        />
-      </svg>
+    <section className="bg-white dark:bg-black w-full py-12 md:py-24 lg:py-32">
+      <div className="container px-4 md:px-6">
+        <h2 className="font-din-condensed uppercase text-3xl sm:text-4xl md:text-5xl text-right mb-8 ml-auto -translate-y-10">
+          Render membantu semua pihak berada<br/> di halaman yang sama sebelum proyek dimulai
+        </h2>
+        <div className="relative pl-8">
+          {" "}
+          {/* Wrapper baru untuk memposisikan ikon relatif terhadap slider */}
+          {/* Ikon Plus di kiri atas slider */}
+          <Plus className="absolute -left-2 top-0 h-6 w-6 text-gray-500 dark:text-gray-400" />
+          {/* Ikon Plus di kiri bawah slider */}
+          <Plus className="absolute -left-2 bottom-0 h-6 w-6 text-gray-500 dark:text-gray-400" />
+          <div className="embla overflow-hidden" ref={emblaRef}>
+            <div className="embla__container flex touch-pan-y -ml-8">
+              {images.map((image, index) => (
+                <div key={index} className="embla__slide flex-none min-w-0 pl-4">
+                  <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden shadow-lg">
+                    <Image
+                      src={image.src || "/placeholder.svg"}
+                      alt={image.alt}
+                      layout="fill"
+                      objectFit="cover"
+                      className="transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+            <div className="mt-6 pl-8 text-left max-w-md">
+      <strong className="font-urw-din block text-black dark:text-white text-sm sm:text-base">
+        Tanpa biaya tersembunyi
+      </strong>
+      <p className="font-urw-din text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
+        Transparansi biaya dari awal tanpa kejutan di akhir proyek
+      </p>
     </div>
+      </div>
+    </section>
 
-    {/* === Desktop Images with clipPath shape === */}
-<div className="hidden md:block">
-  {/* Container untuk SVG + Hover Effect */}
-  <div className="
-    absolute w-[10vw] md:w-[8vw] min-w-[71px] h-[25vh] md:h-[30vh] min-h-[182px] 
-    top-[27%] left-[25%] origin-top-left
-    group md:scale-[1.5] z-0 hover:z-50
-  ">
-    {/* SVG Asli (Normal State) */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 71 182"
-      className="max-h-full aspect-[71/182] group-hover:opacity-0 transition-opacity duration-300"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <clipPath id="clip1">
-          <path d="M0 0H71V182H7L0 0Z" />
-        </clipPath>
-      </defs>
-      <image
-        href="/images/1.webp"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        clipPath="url(#clip1)"
-      />
-    </svg>
-
-    {/* Gambar Full-Size (Hover State) */}
-    <div className="
-      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
-      hidden group-hover:block z-50
-    ">
-      <img
-        src="/images/1.webp"
-        alt="Full Preview"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-
-        {/* Image 2 */}
-  <div className="
-    absolute w-[10vw] md:w-[8vw] min-w-[73px] h-[25vh] md:h-[30vh] min-h-[184px] 
-    top-[33%] left-[38%] origin-top-left
-    group md:scale-[1.5] z-0 hover:z-50
-  ">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 73 184"
-      className="max-h-full aspect-[73/184] group-hover:opacity-0 transition-opacity duration-300"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <clipPath id="clip2">
-          <path d="M0 0H51L73 164L0 184V0Z" />
-        </clipPath>
-      </defs>
-      <image
-        href="/images/2.webp"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        clipPath="url(#clip2)"
-      />
-    </svg>
-
-    <div className="
-      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
-      hidden group-hover:block z-50
-    ">
-      <img
-        src="/images/2.webp"
-        alt="Full Preview"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-
-  {/* Image 3 */}
-  <div className="
-    absolute w-[11vw] md:w-[9vw] min-w-[82px] h-[20vh] md:h-[25vh] min-h-[149px] 
-    top-[24%] left-[48%] origin-top-left
-    group md:scale-[1.5] z-0 hover:z-50
-  ">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 82 149"
-      className="max-h-full aspect-[82/149] group-hover:opacity-0 transition-opacity duration-300"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <clipPath id="clip3">
-          <path d="M0 12L56 0L82 149H17L0 12Z" />
-        </clipPath>
-      </defs>
-      <image
-        href="/images/3.webp"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        clipPath="url(#clip3)"
-      />
-    </svg>
-
-    <div className="
-      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
-      hidden group-hover:block z-50
-    ">
-      <img
-        src="/images/3.webp"
-        alt="Full Preview"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-
-  {/* Image 4 */}
-  <div className="
-    absolute w-[8vw] md:w-[6vw] min-w-[54px] h-[15vh] md:h-[20vh] min-h-[110px] 
-    top-[27%] left-[60%] origin-top-left
-    group md:scale-[1.5] z-0 hover:z-50">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 54 110"
-      className="max-h-full aspect-[54/110] group-hover:opacity-0 transition-opacity duration-300"
-      preserveAspectRatio="none"
-    >
-      <defs>
-        <clipPath id="clip4">
-          <path d="M0 0H54V110H19L0 0Z" />
-        </clipPath>
-      </defs>
-      <image
-        href="/images/4.webp"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-        clipPath="url(#clip4)"
-      />
-    </svg>
-
-    <div className="
-      absolute top-0 bottom-0 left-[-100px] right-[-100px] 
-      hidden group-hover:block z-50
-    ">
-      <img
-        src="/images/4.webp"
-        alt="Full Preview"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-</div>
-
-    {/* === Text === */}
-    <div className="absolute text-gray-900 dark:text-white text-xs md:text-lg top-[37%] left-[12%] w-[28%] md:w-[15%] leading-normal">
-      tempek nyell
-    </div>
-    <div className="absolute w-[19%] md:w-[10%] top-[18%] left-[26%] font-normal text-gray-900 dark:text-white text-xs md:text-lg tracking-[0] leading-[normal]">
-      TEMPEK
-    </div>
-  </div>
-</section>
 
 
 

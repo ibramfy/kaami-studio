@@ -60,18 +60,18 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto text-center">
         {/* Branding */}
         <div className="mb-8">
-          <h3 className="text-2xl portfolio-font flex justify-center items-center mb-3">
-            <span className="mr-2">KAAMI ARCHITECTURE</span>
+          <h3 className="font-din-condensed text-2xl portfolio-font flex justify-center items-center mb-3">
+            <span className="mr-2">KAAMI STUDIO</span>
             
           </h3>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
-            Crafting spaces with precision and visionary design.
+          <p className="font-urw-din text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
+            Kami percaya bahwa desain tak seharusnya hanya dinikmati oleh mereka yang mampu. Karena itu, sebagian dari hasil kerja kami kami gunakan untuk membangun hal-hal penting di tempat yang benar-benar membutuhkannya
           </p>
         </div>
 
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-border text-muted-foreground text-xs flex flex-col md:flex-row justify-center items-center gap-3">
-          <span>© {new Date().getFullYear()} KAAMI ARCHITECTURE STUDIO</span>
+          <span>© {new Date().getFullYear()} KAAMI STUDIO ARCHITECTURE</span>
           <span className="hidden md:inline">|</span>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white transition-colors">

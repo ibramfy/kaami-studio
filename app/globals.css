@@ -235,3 +235,46 @@ h6 {
 .group:hover .nav-dot:not(.nav-dot-active) {
   background-color: rgba(currentColor, 0.3);
 }
+
+.embla {
+  --slide-spacing: 1rem;
+  --slide-size: 100%;
+  --slide-height: 19rem; /* Default height for mobile */
+}
+
+@media (min-width: 640px) {
+  /* sm breakpoint */
+  .embla {
+    --slide-size: 50%; /* 2 slides on small screens */
+  }
+}
+
+@media (min-width: 768px) {
+  /* md breakpoint */
+  .embla {
+    --slide-size: 33.333333%; /* 3 slides on medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg breakpoint */
+  .embla {
+    --slide-size: 25%; /* 4 slides on large screens */
+  }
+}
+
+.embla__slide {
+  flex: 0 0 var(--slide-size);
+  padding-left: var(--slide-spacing);
+}
+
+.embla__slide__number {
+  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
+  border-radius: 1.8rem;
+  font-size: 4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--slide-height);
+}
