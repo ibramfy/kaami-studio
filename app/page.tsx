@@ -25,13 +25,14 @@ export default function Home() {
   const [projectsError, setProjectsError] = useState<string | null>(null)
   const [teamError, setTeamError] = useState<string | null>(null)
 
+  
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 3000, stopOnInteraction: false })])
 
   const images = [
     { src: "/images/1.webp", alt: "Placeholder Image 1" },
-    { src: "/placeholder.svg?height=400&width=600&text=Image 2", alt: "Placeholder Image 2" },
-    { src: "/placeholder.svg?height=400&width=600&text=Image 3", alt: "Placeholder Image 3" },
-    { src: "/placeholder.svg?height=400&width=600&text=Image 4", alt: "Placeholder Image 4" },
+    { src: "/images/2.webp", alt: "Placeholder Image 2" },
+    { src: "/images/3.webp", alt: "Placeholder Image 3" },
+    { src: "/images/4.webp", alt: "Placeholder Image 4" },
     { src: "/placeholder.svg?height=400&width=600&text=Image 5", alt: "Placeholder Image 5" },
     { src: "/placeholder.svg?height=400&width=600&text=Image 6", alt: "Placeholder Image 6" },
     { src: "/placeholder.svg?height=400&width=600&text=Image 7", alt: "Placeholder Image 7" },
@@ -134,7 +135,7 @@ export default function Home() {
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-        backgroundImage: "url('images/herosection.jpg')",
+        backgroundImage: "url('images/hero.jpg')",
         }}
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
@@ -210,7 +211,7 @@ export default function Home() {
 
 {/* features */}
     <section className="bg-white dark:bg-black w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+      <div className="container pt-20 px-4 md:px-6">
         <h2 className="font-din-condensed uppercase text-3xl sm:text-4xl md:text-5xl text-right mb-8 ml-auto -translate-y-10">
           Render membantu semua pihak berada<br/> di halaman yang sama sebelum proyek dimulai
         </h2>
@@ -250,9 +251,7 @@ export default function Home() {
       </div>
     </section>
 
-
-
-
+{/* youtube */}
 <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 bg-white dark:bg-black">
   <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
     {/* Visual Section (60%) */}
